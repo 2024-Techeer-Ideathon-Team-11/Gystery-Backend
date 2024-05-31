@@ -22,42 +22,63 @@ export default {
 
     question: async (req, res) => {
         let {id, question} = req.body;
-        let {quiz} = quizRepository.get(id);
 
-        let answer = await 답변응답(quiz, question);
+        let quiz = "이상한 문제";
+
+        if (quizRepository.has(id)) {
+            quiz = quizRepository.get(id).quiz;
+            let answer = await 답변응답(quiz, question);
+            res.send({
+                answer
+            })
+        }
+
         res.send({
-            answer
+            quiz
         })
     },
 
     answer: async (req, res) => {
         let {id, answer} = req.body;
-        let {quiz} = quizRepository.get(id);
-        let response = await 정답응답(quiz, answer);
+        if(quizRepository.has(id)){
+            let {quiz} = quizRepository.get(id);
+            let response = await 정답응답(quiz, answer);
 
-        let isCorrect;
+            let isCorrect;
 
-        if (!(response.startsWith("예") || response.startsWith("아니"))) {
-            isCorrect = false;
-        } else {
-            isCorrect = response.startsWith("예");
+            if (!(response.startsWith("예") || response.startsWith("아니"))) {
+                isCorrect = false;
+            } else {
+                isCorrect = response.startsWith("예");
+            }
+
+
+            res.send({
+                isCorrect,
+                answer: response,
+            })
         }
 
-
         res.send({
-            isCorrect,
-            answer: response,
+            "isCorrect": false,
+            "answer": "퀴즈가 없습니다."
         })
     },
 
     comment: async (req, res) => {
         let {id} = req.body;
-        let {quiz} = quizRepository.get(id);
+        if(quizRepository.has(id)){
+            let {quiz} = quizRepository.get(id);
 
-        let response = await 정답해설(quiz);
+            let response = await 정답해설(quiz);
+
+            res.send({
+                "comment": response,
+            })
+        }
 
         res.send({
-            "comment": response,
+            "comment": "퀴즈가 없습니다."
         })
     },
 

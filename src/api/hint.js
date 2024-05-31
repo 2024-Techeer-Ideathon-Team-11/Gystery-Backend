@@ -3,9 +3,15 @@ import {quizRepository} from "./quiz.js";
 export default {
     home: async (req, res) => {
         let {id, num} = req.query;
-        let {hintList} = quizRepository.get(id)
+        if(quizRepository.has(id)){
+            let {hintList} = quizRepository.get(id)
+            res.send({
+                "hint": hintList[num - 1]
+            })
+        }
+
         res.send({
-            "hint": hintList[num - 1]
+            "hint": "힌트가 없습니다."
         })
     },
 }
