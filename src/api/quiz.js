@@ -15,7 +15,8 @@ export default {
         console.log(quizRepository);
 
         res.send({
-            "id": randomId
+            "id": randomId,
+            quiz
         })
     },
 
