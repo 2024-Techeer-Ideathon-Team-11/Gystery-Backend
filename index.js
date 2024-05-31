@@ -1,11 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import router from './src/router.js';
+import cors from 'cors';
 // import env from 'dotenv';
 
 // env.config();
 
 const app = express();
+
+app.use(cors());
 
 // 서버 정적 파일 경로 설정
 app.use(express.static('public'));
