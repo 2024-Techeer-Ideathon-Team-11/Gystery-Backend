@@ -12,10 +12,8 @@ export default {
 
         quizRepository.set(randomId, {quiz, hintList});
 
-        console.log(quizRepository);
-
         res.send({
-            "id": randomId,
+            id: randomId,
             quiz
         })
     },
@@ -31,16 +29,16 @@ export default {
             res.send({
                 answer
             })
+        } else {
+            res.send({
+                answer: quiz
+            })
         }
-
-        res.send({
-            quiz
-        })
     },
 
     answer: async (req, res) => {
         let {id, answer} = req.body;
-        if(quizRepository.has(id)){
+        if (quizRepository.has(id)) {
             let {quiz} = quizRepository.get(id);
             let response = await 정답응답(quiz, answer);
 
@@ -52,22 +50,21 @@ export default {
                 isCorrect = response.startsWith("예");
             }
 
-
             res.send({
                 isCorrect,
                 answer: response,
             })
+        } else {
+            res.send({
+                isCorrect: false,
+                answer: "퀴즈가 없습니다."
+            })
         }
-
-        res.send({
-            "isCorrect": false,
-            "answer": "퀴즈가 없습니다."
-        })
     },
 
     comment: async (req, res) => {
         let {id} = req.body;
-        if(quizRepository.has(id)){
+        if (quizRepository.has(id)) {
             let {quiz} = quizRepository.get(id);
 
             let response = await 정답해설(quiz);
@@ -75,21 +72,10 @@ export default {
             res.send({
                 "comment": response,
             })
+        } else {
+            res.send({
+                "comment": "퀴즈가 없습니다."
+            })
         }
-
-        res.send({
-            "comment": "퀴즈가 없습니다."
-        })
     },
-
-
-    // param: (req, res) => {
-    //     const param = req.params.param;
-    //     res.send(param);
-    // },
-    //
-    // post: (req, res) => {
-    //     const body = req.body;
-    //     res.send(body);
-    // },
 }
