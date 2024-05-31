@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
-app.use('/', router);
+app.use('/api/v1', router);
 
 app.listen(8000, () => {
     console.log('Example app listening on port 3000!');
