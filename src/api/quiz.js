@@ -1,5 +1,5 @@
 import {randomCodeGenerator} from "../utils/hash.js";
-import {답변응답, 정답응답, 퀴즈생성} from "../chatgpt/chatgpt.js";
+import {답변응답, 정답응답, 정답해설, 퀴즈생성} from "../chatgpt/chatgpt.js";
 
 export const quizRepository = new Map();
 
@@ -48,7 +48,18 @@ export default {
             isCorrect,
             answer: response,
         })
-    }
+    },
+
+    comment: async (req, res) => {
+        let {id} = req.body;
+        let {quiz} = quizRepository.get(id);
+
+        let response = await 정답해설(quiz);
+
+        res.send({
+            "comment": response,
+        })
+    },
 
 
     // param: (req, res) => {

@@ -7,6 +7,7 @@ const router = express.Router();
 router.get('/quiz', quiz.home);
 router.post('/question', quiz.question);
 router.post('/answer', quiz.answer);
+router.post('/comment', quiz.comment);
 router.get('/hint', hint.home);
 // router.get('/param/:param', home.param);
 // // router.post('/post', home.post);
