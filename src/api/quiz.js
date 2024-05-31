@@ -35,7 +35,14 @@ export default {
         let {quiz} = quizRepository.get(id);
         let response = await 정답응답(quiz, answer);
 
-        let isCorrect = response.startsWith("예");
+        let isCorrect;
+
+        if (!(response.startsWith("예") || response.startsWith("아니"))) {
+            isCorrect = false;
+        } else {
+            isCorrect = response.startsWith("예");
+        }
+
 
         res.send({
             isCorrect,
