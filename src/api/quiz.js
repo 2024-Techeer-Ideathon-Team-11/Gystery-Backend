@@ -1,10 +1,18 @@
 import {randomCodeGenerator} from "../utils/hash.js";
 
-const quiz_repository = new Map();
+const quizRepository = new Map();
 
 export default {
     home: (req, res) => {
         let randomId = randomCodeGenerator();
+
+        // 문제 받아옴
+        // let {quiz, answer} = quizRepository.get(randomId);
+        let quiz = null;
+        let answer = null;
+
+        quizRepository.set(randomId, {quiz, answer});
+
         res.send({
             "id": randomId
         })
