@@ -5,7 +5,8 @@ import hint from './api/hint.js';
 const router = express.Router();
 
 router.get('/quiz', quiz.home);
-router.get('/hint/:quizId/:hintId', hint.home);
+router.post('/answer', quiz.answer);
+router.get('/hint', hint.home);
 // router.get('/param/:param', home.param);
 // // router.post('/post', home.post);
 

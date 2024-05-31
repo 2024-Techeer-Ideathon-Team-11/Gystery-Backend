@@ -1,33 +1,41 @@
-import { randomCodeGenerator } from '../utils/hash.js';
+import {randomCodeGenerator} from "../utils/hash.js";
+import {답변응답, 퀴즈생성} from "../chatgpt/chatgpt.js";
 
 export const quizRepository = new Map();
 
 export default {
-  home: (req, res) => {
-    let randomId = randomCodeGenerator();
+    home: async (req, res) =>  {
+        let randomId = randomCodeGenerator();
 
-    // 문제 받아옴
-    // let {quiz, answer} = quizRepository.get(randomId);
-    let quiz = null;
-    let answer = null;
-    let hint1 = null;
-    let hint2 = null;
-    let hint3 = null;
+        // 문제 받아옴
+        let {quiz, hintList} = await 퀴즈생성();
 
-    quizRepository.set(randomId, { quiz, answer, hint1, hint2, hint3 });
+        quizRepository.set(randomId, {quiz, hintList});
 
-    res.send({
-      id: randomId,
-    });
-  },
+        console.log(quizRepository);
 
-  // param: (req, res) => {
-  //     const param = req.params.param;
-  //     res.send(param);
-  // },
-  //
-  // post: (req, res) => {
-  //     const body = req.body;
-  //     res.send(body);
-  // },
-};
+        res.send({
+            "id": randomId
+        })
+    },
+
+    answer : async (req, res) => {
+        let {id, question} = req.body;
+        let {quiz} = quizRepository.get(id);
+
+        let answer = await 답변응답(quiz, question);
+        res.send({
+            answer
+        })
+    }
+
+    // param: (req, res) => {
+    //     const param = req.params.param;
+    //     res.send(param);
+    // },
+    //
+    // post: (req, res) => {
+    //     const body = req.body;
+    //     res.send(body);
+    // },
+}
